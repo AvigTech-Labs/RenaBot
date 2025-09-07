@@ -1,0 +1,1271 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="es" data-content_root="../../">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Blockly + MQTT &mdash; documentación de Documentacion_RENA-BOT - 0.1</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+      <link rel="stylesheet" type="text/css" href="../../_static/tabs.css?v=a5c4661c" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=9c9b61ad"></script>
+      <script src="../../_static/doctools.js?v=9bcbadda"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+      <script src="../../_static/translations.js?v=f85f4cfb"></script>
+      <script src="../../_static/tabs.js?v=3030b3cb"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Índice" href="../../genindex.html" />
+    <link rel="search" title="Búsqueda" href="../../search.html" />
+    <link rel="next" title="PySide6" href="../tema_4/0_conf.html" />
+    <link rel="prev" title="Instalacion Arduino ID" href="../tema_2/0_electronica.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            Documentacion_RENA-BOT
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Buscar documentos" aria-label="Buscar documentos" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Introducción</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tema_0/0_intro.html">Introduccion al Repositorio</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Construcción</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tema_1/0_construccion.html">Blockly</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Electrónica</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tema_2/0_electronica.html">Instalacion Arduino ID</a></li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Software</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Blockly + MQTT</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#arquitectura-del-sistema">Arquitectura del sistema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#endpoint-disponible">Endpoint disponible</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#comandos-disponibles">Comandos disponibles</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#estado-actual-del-sistema">Estado actual del sistema</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#aplicacion-movil">Aplicación Movil</a></li>
+</ul>
+</li>
+</ul>
+<p class="caption" role="heading"><span class="caption-text">Configuración y Uso</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../tema_4/0_conf.html">PySide6</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../tema_4/1_ejemplos.html">HMI - AT-01 kit</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">Documentacion_RENA-BOT</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Blockly + MQTT</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-blockly-mqtt">
+<h1>API Blockly + MQTT<a class="headerlink" href="#api-blockly-mqtt" title="Link to this heading"></a></h1>
+<p>Esta documentación describe el funcionamiento actual de la API que conecta la interfaz visual Blockly con el backend basado en FastAPI y comunicación MQTT. El sistema permite construir programas visuales usando bloques, que luego se traducen en comandos JSON y se ejecutan en un robot o sistema IoT.</p>
+<section id="arquitectura-del-sistema">
+<h2>Arquitectura del sistema<a class="headerlink" href="#arquitectura-del-sistema" title="Link to this heading"></a></h2>
+<p>El sistema está dividido en tres componentes principales:</p>
+<ol class="arabic simple">
+<li><p><strong>Frontend (Blockly)</strong>:
+- Interfaz visual que permite construir lógica con bloques.
+- Convierte los bloques en un JSON estructurado mediante un generador personalizado.
+- Envía el JSON al backend usando un <cite>fetch()</cite> al endpoint <cite>/api/comando</cite>.</p></li>
+<li><p><strong>Backend (FastAPI)</strong>:
+- Recibe comandos en formato JSON.
+- Interpreta secuencialmente los comandos: <cite>publicar</cite>, <cite>esperar</cite>, <cite>for</cite>, <cite>if</cite>.
+- Publica mensajes al tópico MQTT <cite>/ra/motores</cite>.
+- Escucha respuestas en el tópico <cite>/estado</cite>.</p></li>
+<li><p><strong>Broker MQTT</strong>:
+- Canal intermedio para la comunicación entre backend y dispositivos.
+- El backend publica en <cite>/ra/motores</cite>.
+- Se espera confirmación de dispositivos en <cite>/estado</cite>.</p></li>
+</ol>
+</section>
+<section id="endpoint-disponible">
+<h2>Endpoint disponible<a class="headerlink" href="#endpoint-disponible" title="Link to this heading"></a></h2>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-0-L2FwaS9jb21hbmRv" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-0-L2FwaS9jb21hbmRv" name="L2FwaS9jb21hbmRv" role="tab" tabindex="0">/api/comando</button><button aria-controls="panel-0-KipSZXNwdWVzdGEqKjo=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-0-KipSZXNwdWVzdGEqKjo=" name="KipSZXNwdWVzdGEqKjo=" role="tab" tabindex="-1"><strong>Respuesta</strong>:</button></div><div aria-labelledby="tab-0-L2FwaS9jb21hbmRv" class="sphinx-tabs-panel group-tab" id="panel-0-L2FwaS9jb21hbmRv" name="L2FwaS9jb21hbmRv" role="tabpanel" tabindex="0"><p>Ejecuta una secuencia de comandos generada desde Blockly.</p>
+<p><strong>Entrada JSON</strong>:</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;comandos&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">   </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;publicar&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mover&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;valor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;adelante&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;esperar&quot;</span>
+<span class="w">   </span><span class="p">},</span>
+<span class="w">   </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;for&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;repeticiones&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">3</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;hacer&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">         </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;publicar&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mover&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;valor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;izquierda&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-0-KipSZXNwdWVzdGEqKjo=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-0-KipSZXNwdWVzdGEqKjo=" name="KipSZXNwdWVzdGEqKjo=" role="tabpanel" tabindex="0"><div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="nt">&quot;status&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;ok&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="comandos-disponibles">
+<h2>Comandos disponibles<a class="headerlink" href="#comandos-disponibles" title="Link to this heading"></a></h2>
+<p>Cada comando corresponde a un bloque de Blockly. El backend interpreta los comandos en orden.</p>
+<p><strong>1. publicar</strong></p>
+<p>Publica un mensaje MQTT al tópico <code class="docutils literal notranslate"><span class="pre">/ra/motores</span></code>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;publicar&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mover&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;valor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;adelante&quot;</span>
+<span class="w">  </span><span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>2. esperar</strong></p>
+<p>Espera un mensaje de confirmación MQTT desde <code class="docutils literal notranslate"><span class="pre">/estado</span></code>.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;esperar&quot;</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>3. for</strong></p>
+<p>Repite una serie de instrucciones un número determinado de veces.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;for&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;repeticiones&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">5</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;hacer&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;publicar&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mover&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;valor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;izquierda&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+<p><strong>4. if</strong></p>
+<p>Evalúa una condición y ejecuta instrucciones si se cumple.</p>
+<div class="highlight-json notranslate"><div class="highlight"><pre><span></span><span class="p">{</span>
+<span class="w">  </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;if&quot;</span><span class="p">,</span>
+<span class="w">  </span><span class="nt">&quot;condicion&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span>
+<span class="w">    </span><span class="nt">&quot;variable&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;x&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;operador&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span>
+<span class="w">    </span><span class="nt">&quot;valor&quot;</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span>
+<span class="w">  </span><span class="p">},</span>
+<span class="w">  </span><span class="nt">&quot;entonces&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">    </span><span class="p">{</span>
+<span class="w">      </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;publicar&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="nt">&quot;mensaje&quot;</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nt">&quot;accion&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;mover&quot;</span><span class="p">,</span><span class="w"> </span><span class="nt">&quot;valor&quot;</span><span class="p">:</span><span class="w"> </span><span class="s2">&quot;atras&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">    </span><span class="p">}</span>
+<span class="w">  </span><span class="p">]</span>
+<span class="p">}</span>
+</pre></div>
+</div>
+</section>
+<section id="estado-actual-del-sistema">
+<h2>Estado actual del sistema<a class="headerlink" href="#estado-actual-del-sistema" title="Link to this heading"></a></h2>
+<ul class="simple">
+<li><p>✅ Soporte completo para estructuras anidadas (<cite>for</cite> con <cite>if</cite>, etc.).</p></li>
+<li><p>✅ Generación automática de JSON desde bloques Blockly.</p></li>
+<li><p>✅ Comunicación MQTT funcional (<cite>/ra/motores</cite>, <cite>/estado</cite>).</p></li>
+<li><p>✅ Backend basado en FastAPI, extensible.</p></li>
+<li><p>✅ Integración educativa y visual para control de robots o sistemas IoT.</p></li>
+</ul>
+<p><strong>Código</strong> <code class="docutils literal notranslate"><span class="pre">41_bloques</span></code>: Generación de bloques personalizados Blockly</p>
+<p><strong>Código</strong> <code class="docutils literal notranslate"><span class="pre">41_index</span></code>: Frontend</p>
+<p><strong>Código</strong> <code class="docutils literal notranslate"><span class="pre">41_main</span></code>: Backend</p>
+<p><strong>Código</strong> <code class="docutils literal notranslate"><span class="pre">41_equipo1</span></code>: Equipo prueba de MQTT</p>
+<p>Codigo:</p>
+<div class="sphinx-tabs docutils container">
+<div aria-label="Tabbed content" class="closeable" role="tablist"><button aria-controls="panel-1-NDFfQmxvcXVlcw==" aria-selected="true" class="sphinx-tabs-tab group-tab" id="tab-1-NDFfQmxvcXVlcw==" name="NDFfQmxvcXVlcw==" role="tab" tabindex="0">41_Bloques</button><button aria-controls="panel-1-NDFfaW5kZXg=" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-NDFfaW5kZXg=" name="NDFfaW5kZXg=" role="tab" tabindex="-1">41_index</button><button aria-controls="panel-1-NDFfbWFpbi5weQ==" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-NDFfbWFpbi5weQ==" name="NDFfbWFpbi5weQ==" role="tab" tabindex="-1">41_main.py</button><button aria-controls="panel-1-NDFfbWFpbi5weQ==-1" aria-selected="false" class="sphinx-tabs-tab group-tab" id="tab-1-NDFfbWFpbi5weQ==-1" name="NDFfbWFpbi5weQ==-1" role="tab" tabindex="-1">41_main.py</button></div><div aria-labelledby="tab-1-NDFfQmxvcXVlcw==" class="sphinx-tabs-panel group-tab" id="panel-1-NDFfQmxvcXVlcw==" name="NDFfQmxvcXVlcw==" role="tabpanel" tabindex="0"><p><strong>Entrada JSON</strong>:</p>
+<div class="highlight-js notranslate"><div class="highlight"><pre><span></span><span class="c1">// bloque movimientos</span>
+
+<span class="nx">Blockly</span><span class="p">.</span><span class="nx">defineBlocksWithJsonArray</span><span class="p">([</span>
+
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;enviar_comando_api&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Mover Robot Movil %1&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">         </span><span class="p">{</span>
+<span class="w">         </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_dropdown&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;VALOR&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="s2">&quot;options&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">               </span><span class="p">[</span><span class="s2">&quot;adelante&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;adelante&quot;</span><span class="p">],</span>
+<span class="w">               </span><span class="p">[</span><span class="s2">&quot;izquierda&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;giro_izquierda&quot;</span><span class="p">],</span>
+<span class="w">               </span><span class="p">[</span><span class="s2">&quot;derecha&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;giro_derecha&quot;</span><span class="p">],</span>
+<span class="w">               </span><span class="p">[</span><span class="s2">&quot;atras&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;giro_180&quot;</span><span class="p">]</span>
+<span class="w">         </span><span class="p">]</span>
+<span class="w">         </span><span class="p">},</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="s2">&quot;previousStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">230</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Activa los movimientos del RENA Bot&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque Esperar</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;bloque_esperar&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Esperar  %1 segundos&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;TIME&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;check&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Number&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="p">],</span>
+<span class="s2">&quot;previousStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">230</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Espera una cantidad de tiempo&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque condicional IF</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;bloque_if&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;si %1 entonces %2&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_value&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;VAR&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// recibe expresiones booleanas como output: &quot;Boolean&quot;</span>
+<span class="w">      </span><span class="s2">&quot;check&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Boolean&quot;</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_statement&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;ENTONCES&quot;</span>
+<span class="w">      </span><span class="p">}</span>
+<span class="p">],</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">120</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Evalúa una condición lógica y ejecuta si se cumple&quot;</span><span class="p">,</span>
+<span class="s2">&quot;previousStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque For</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;bloque_for&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;repetir %1 veces %2 hacer %3&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;VECES&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;check&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Number&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_dummy&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">      </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_statement&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;HACER&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">],</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="mf">120</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Repite instrucciones varias veces&quot;</span><span class="p">,</span>
+<span class="s2">&quot;previousStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span>
+<span class="p">},</span>
+
+<span class="c1">// BLoque Comparación entre variables</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;logic_compare&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;%1 %2 %3&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;check&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Number&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_dropdown&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;OP&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;options&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">[</span><span class="s2">&quot;=&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;==&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="p">[</span><span class="s2">&quot;≠&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;!=&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="p">[</span><span class="s2">&quot;&lt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&lt;&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="p">[</span><span class="s2">&quot;≤&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&lt;=&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="p">[</span><span class="s2">&quot;&gt;&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&gt;&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="p">[</span><span class="s2">&quot;≥&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;&gt;=&quot;</span><span class="p">]</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="p">},</span>
+<span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;check&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Number&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">],</span>
+<span class="s2">&quot;inputsInline&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="s2">&quot;output&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Boolean&quot;</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">210</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Compara dos valores numéricos&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque condicional entre IFs</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;logic_operation&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;%1 %2 %3&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_value&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;A&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;check&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Boolean&quot;</span>
+<span class="p">},</span>
+<span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_dropdown&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;OP&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;options&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[[</span><span class="s2">&quot;y&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;AND&quot;</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;o&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;OR&quot;</span><span class="p">]]</span>
+<span class="p">},</span>
+<span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_value&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;B&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;check&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Boolean&quot;</span>
+<span class="p">}</span>
+<span class="p">],</span>
+<span class="s2">&quot;inputsInline&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="s2">&quot;output&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Boolean&quot;</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">210</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Operador lógico AND/OR&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque If/Else</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;bloque_if_else&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;si %1 entonces %2 si no %3&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;COND&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;check&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Boolean&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_statement&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;ENTONCES&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_statement&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;SINO&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">],</span>
+<span class="s2">&quot;previousStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">120</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Si la condición se cumple, hace algo; si no, otra cosa.&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque Booleano</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;logic_boolean&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;%1&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_dropdown&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;BOOL&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;options&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[[</span><span class="s2">&quot;verdadero&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;True&quot;</span><span class="p">],</span><span class="w"> </span><span class="p">[</span><span class="s2">&quot;falso&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;False&quot;</span><span class="p">]]</span>
+<span class="p">}</span>
+<span class="p">],</span>
+<span class="s2">&quot;output&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Boolean&quot;</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">210</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Devuelve verdadero o falso&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque Iniciar el Robot</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;bloque_inicar&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Iniciar kit de robótica %1&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">         </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_input&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;NOMBRE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Rena1&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="s2">&quot;hat&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;cap&quot;</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;#f19f10&quot;</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Iniciar Rena Robot&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque modificar velocidad</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;bloque_velocidad&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Velocidad %1 porcentaje&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">         </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;VELOCIDAD&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;check&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Number&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="s2">&quot;previousStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">230</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Define la velocidad a la que se mueve el robot&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque activar el gripper</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;bloque_gripper&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Gripper %1&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_dropdown&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;GRIPPER&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;options&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">         </span><span class="p">[</span><span class="s2">&quot;Abrir&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Abrir&quot;</span><span class="p">],</span>
+<span class="w">         </span><span class="p">[</span><span class="s2">&quot;Cerrar&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;Cerrar&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="s2">&quot;previousStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">230</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Cambiar el estado del gripper&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque Encender LEDs</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;bloque_led&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LED %1&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_dropdown&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;LED&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;options&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">         </span><span class="p">[</span><span class="s2">&quot;ON&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ON&quot;</span><span class="p">],</span>
+<span class="w">         </span><span class="p">[</span><span class="s2">&quot;OFF&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;OFF&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="w">         </span><span class="p">],</span>
+<span class="s2">&quot;previousStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">230</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Encender LEDS&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque crear variable</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;crear_variable&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;crear variable %1 con valor %2&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_input&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;NOMBRE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;mi_variable&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;VALOR&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">],</span>
+<span class="s2">&quot;previousStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">290</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Crea una nueva variable con valor inicial&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">//  BLoque modificar variables</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;set_variable&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;establecer %1 a %2&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_input&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;NOMBRE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;mi_variable&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;input_value&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;VALOR&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">],</span>
+<span class="s2">&quot;previousStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">290</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Asigna un nuevo valor a una variable&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque Obtener variable</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;get_variable&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;valor de %1&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="p">{</span><span class="w"> </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_input&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;NOMBRE&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;text&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;mi_variable&quot;</span><span class="w"> </span><span class="p">}</span>
+<span class="p">],</span>
+<span class="s2">&quot;output&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">290</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Obtiene el valor actual de la variable&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Bloque leer dato del sensor</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;bloque_leer_sensor&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Leer el sensor %1&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">      </span><span class="p">{</span>
+<span class="w">      </span><span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_dropdown&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;SENSOR&quot;</span><span class="p">,</span>
+<span class="w">      </span><span class="s2">&quot;options&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="w">         </span><span class="p">[</span><span class="s2">&quot;ultrasonico&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;ultrasonico&quot;</span><span class="p">],</span>
+<span class="w">         </span><span class="p">[</span><span class="s2">&quot;LDR&quot;</span><span class="p">,</span><span class="w"> </span><span class="s2">&quot;LDR&quot;</span><span class="p">],</span>
+<span class="w">      </span><span class="p">]</span>
+<span class="w">      </span><span class="p">},</span>
+<span class="p">],</span>
+<span class="s2">&quot;previousStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;nextStatement&quot;</span><span class="o">:</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">290</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Actualiza el valor de un sensor&quot;</span>
+<span class="p">},</span>
+
+<span class="c1">// Variable de sensor</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;get_sensor&quot;</span><span class="p">,</span>
+<span class="s2">&quot;message0&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;nombre de variable %1&quot;</span><span class="p">,</span>
+<span class="s2">&quot;args0&quot;</span><span class="o">:</span><span class="w"> </span><span class="p">[</span>
+<span class="p">{</span>
+<span class="s2">&quot;type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;field_input&quot;</span><span class="p">,</span>
+<span class="s2">&quot;name&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;NUM&quot;</span><span class="p">,</span>
+<span class="s2">&quot;text&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;ultrasonico&quot;</span>
+<span class="p">}</span>
+<span class="p">],</span>
+<span class="s2">&quot;output&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Number&quot;</span><span class="p">,</span><span class="w">  </span><span class="c1">// o &quot;String&quot; si es texto, o null si es genérico</span>
+<span class="s2">&quot;colour&quot;</span><span class="o">:</span><span class="w"> </span><span class="mf">290</span><span class="p">,</span>
+<span class="s2">&quot;tooltip&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;Devuelve el nombre de la variable para usar en comparaciones&quot;</span>
+<span class="p">}</span>
+
+<span class="p">]);</span>
+
+<span class="c1">// Generadores de bloques</span>
+
+<span class="kd">const</span><span class="w"> </span><span class="nx">jsonGen</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="ow">new</span><span class="w"> </span><span class="nx">Blockly</span><span class="p">.</span><span class="nx">Generator</span><span class="p">(</span><span class="s2">&quot;JSON&quot;</span><span class="p">);</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span>
+
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">init</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">workspace</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="p">};</span>
+
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">scrub_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">,</span><span class="w"> </span><span class="nx">code</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">next</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getNextBlock</span><span class="p">();</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">next</span><span class="p">)</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">next</span><span class="p">);</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">outputConnection</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">code</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;&quot;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador bloque enviar movimiento</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;enviar_comando_api&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">valor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s2">&quot;VALOR&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;publicar&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">mensaje</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;publicar&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">valor</span><span class="w"> </span><span class="p">}</span>
+<span class="w">   </span><span class="p">});</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">//  Generador bloque Esperar</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;bloque_esperar&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">let</span><span class="w"> </span><span class="nx">timer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;TIME&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">b</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">type</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;math_number&#39;</span><span class="p">)</span><span class="w"> </span><span class="nx">timer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s1">&#39;NUM&#39;</span><span class="p">))</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">0</span><span class="p">;</span>
+
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;esperar&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">mensaje</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">timer</span><span class="p">}</span>
+<span class="w">   </span><span class="p">});</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Generadores de variables NUM, TEXT y BOOL</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;math_number&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s1">&#39;NUM&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="p">];</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;text&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s2">&quot;TEXT&quot;</span><span class="p">)),</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="p">];</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;logic_boolean&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">[</span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s1">&#39;BOOL&#39;</span><span class="p">),</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="p">];</span>
+
+<span class="c1">// Generadores codigo logica comparar</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;logic_compare&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">op</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s1">&#39;OP&#39;</span><span class="p">)</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;==&#39;</span><span class="p">;</span>
+<span class="w">   </span><span class="kd">let</span><span class="w"> </span><span class="nx">izquierda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="p">;</span>
+<span class="w">   </span><span class="kd">let</span><span class="w"> </span><span class="nx">derecha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="s1">&#39;0&#39;</span><span class="p">;</span>
+
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">leftBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">leftBlock</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">leftCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">leftBlock</span><span class="p">);</span>
+<span class="w">   </span><span class="nx">izquierda</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">leftCode</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">leftCode</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">leftCode</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">rightBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">rightBlock</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">rightCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">rightBlock</span><span class="p">);</span>
+<span class="w">   </span><span class="nx">derecha</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">rightCode</span><span class="p">)</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">rightCode</span><span class="p">[</span><span class="mf">0</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="nx">rightCode</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">resultado</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="sb">`(</span><span class="si">${</span><span class="nx">izquierda</span><span class="si">}</span><span class="sb"> </span><span class="si">${</span><span class="nx">op</span><span class="si">}</span><span class="sb"> </span><span class="si">${</span><span class="nx">derecha</span><span class="si">}</span><span class="sb">)`</span><span class="p">;</span>
+<span class="w">   </span><span class="nx">console</span><span class="p">.</span><span class="nx">log</span><span class="p">(</span><span class="s2">&quot;✅ logic_compare:&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">resultado</span><span class="p">);</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="p">[</span><span class="nx">resultado</span><span class="p">,</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="p">];</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador comparador de condicionales</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;logic_operation&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">a</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;A&quot;</span><span class="p">))[</span><span class="mf">0</span><span class="p">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;False&#39;</span><span class="p">;</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;B&quot;</span><span class="p">))[</span><span class="mf">0</span><span class="p">]</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="s1">&#39;False&#39;</span><span class="p">;</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">op</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s2">&quot;OP&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s2">&quot;AND&quot;</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="s2">&quot;and&quot;</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;or&quot;</span><span class="p">;</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="p">[</span><span class="sb">`(</span><span class="si">${</span><span class="nx">a</span><span class="si">}</span><span class="sb"> </span><span class="si">${</span><span class="nx">op</span><span class="si">}</span><span class="sb"> </span><span class="si">${</span><span class="nx">b</span><span class="si">}</span><span class="sb">)`</span><span class="p">,</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="p">];</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador bloque if</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;bloque_if&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">exprBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;VAR&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="kd">let</span><span class="w"> </span><span class="nx">exprCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">exprBlock</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="p">(</span><span class="nb">Array</span><span class="p">.</span><span class="nx">isArray</span><span class="p">(</span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">exprBlock</span><span class="p">))</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">exprBlock</span><span class="p">)[</span><span class="mf">0</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;False&quot;</span><span class="p">)</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;False&quot;</span><span class="p">;</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">outer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">;</span>
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">inner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;ENTONCES&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">inner</span><span class="p">)</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">inner</span><span class="p">);</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">acciones</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">;</span>
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">outer</span><span class="p">;</span>
+
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="w"> </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;if&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">expresion</span><span class="o">:</span><span class="w"> </span><span class="nx">exprCode</span><span class="p">,</span><span class="w"> </span><span class="nx">entonces</span><span class="o">:</span><span class="w"> </span><span class="nx">acciones</span><span class="w"> </span><span class="p">});</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador bloque for</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;bloque_for&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">let</span><span class="w"> </span><span class="nx">repeticiones</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;VECES&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">b</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">type</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;math_number&#39;</span><span class="p">)</span><span class="w"> </span><span class="nx">repeticiones</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s1">&#39;NUM&#39;</span><span class="p">))</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">1</span><span class="p">;</span>
+
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">outer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">;</span>
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">inner</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;HACER&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">inner</span><span class="p">)</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">inner</span><span class="p">);</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">acciones</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">;</span>
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">outer</span><span class="p">;</span>
+
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="w"> </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;for&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">repeticiones</span><span class="p">,</span><span class="w"> </span><span class="nx">hacer</span><span class="o">:</span><span class="w"> </span><span class="nx">acciones</span><span class="w"> </span><span class="p">});</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador bloque If/ Else</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;bloque_if_else&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">exprBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;COND&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">exprCode</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">exprBlock</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">exprBlock</span><span class="p">)[</span><span class="mf">0</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;False&quot;</span><span class="p">;</span>
+
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">outer</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">;</span>
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">si</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;ENTONCES&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">si</span><span class="p">)</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">si</span><span class="p">);</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">entonces</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">;</span>
+
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">no</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;SINO&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">no</span><span class="p">)</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">no</span><span class="p">);</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">sino</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">;</span>
+
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">outer</span><span class="p">;</span>
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span><span class="w"> </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;if_else&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">expresion</span><span class="o">:</span><span class="w"> </span><span class="nx">exprCode</span><span class="p">,</span><span class="w"> </span><span class="nx">entonces</span><span class="p">,</span><span class="w"> </span><span class="nx">sino</span><span class="w"> </span><span class="p">});</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador bloque velocidad</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;bloque_velocidad&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">let</span><span class="w"> </span><span class="nx">porcentaje</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="mf">60</span><span class="p">;</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">b</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;VELOCIDAD&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">if</span><span class="w"> </span><span class="p">(</span><span class="nx">b</span><span class="w"> </span><span class="o">&amp;&amp;</span><span class="w"> </span><span class="nx">b</span><span class="p">.</span><span class="nx">type</span><span class="w"> </span><span class="o">===</span><span class="w"> </span><span class="s1">&#39;math_number&#39;</span><span class="p">)</span><span class="w"> </span><span class="nx">porcentaje</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">parseInt</span><span class="p">(</span><span class="nx">b</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s1">&#39;NUM&#39;</span><span class="p">))</span><span class="w"> </span><span class="o">||</span><span class="w"> </span><span class="mf">60</span><span class="p">;</span>
+
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;set_velocidad&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">mensaje</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;publicar&quot;</span><span class="p">,</span><span class="w"> </span><span class="nx">porcentaje</span><span class="w"> </span><span class="p">}</span>
+<span class="w">   </span><span class="p">});</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador bloque iniciar</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;bloque_inicar&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">nombre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s2">&quot;NOMBRE&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;iniciar&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">mensaje</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">nombre</span><span class="p">}</span>
+<span class="w">   </span><span class="p">});</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador gripper</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;bloque_gripper&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">valor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s2">&quot;GRIPPER&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;set_gripper&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">mensaje</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">valor</span><span class="p">}</span>
+<span class="w">   </span><span class="p">});</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">//  Generador Crear variable</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;crear_variable&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">nombre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s2">&quot;NOMBRE&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">valorBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;VALOR&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">valor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">valorBlock</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">valorBlock</span><span class="p">,</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="p">)[</span><span class="mf">0</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">;</span>
+
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;definir_variable&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">nombre</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">valor</span>
+<span class="w">   </span><span class="p">});</span>
+
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador set veriuable</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;set_variable&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">nombre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s2">&quot;NOMBRE&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">valorBlock</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getInputTargetBlock</span><span class="p">(</span><span class="s2">&quot;VALOR&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">valor</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">valorBlock</span><span class="w"> </span><span class="o">?</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">blockToCode</span><span class="p">(</span><span class="nx">valorBlock</span><span class="p">,</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="p">)[</span><span class="mf">0</span><span class="p">]</span><span class="w"> </span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;0&quot;</span><span class="p">;</span>
+
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;asignar_variable&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">nombre</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">valor</span>
+<span class="w">   </span><span class="p">});</span>
+
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador get variable</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;get_variable&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">nombre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s2">&quot;NOMBRE&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="p">[</span><span class="nx">nombre</span><span class="p">,</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="p">];</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador leer sensor</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;bloque_leer_sensor&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="kd">function</span><span class="p">(</span><span class="nx">block</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">nombre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s2">&quot;SENSOR&quot;</span><span class="p">);</span>
+<span class="w">   </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">.</span><span class="nx">push</span><span class="p">({</span>
+<span class="w">   </span><span class="nx">accion</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;leer_sensor&quot;</span><span class="p">,</span>
+<span class="w">   </span><span class="nx">mensaje</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="nx">sensor</span><span class="o">:</span><span class="w"> </span><span class="nx">nombre</span><span class="p">}</span>
+<span class="w">   </span><span class="p">});</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="s1">&#39;&#39;</span><span class="p">;</span>
+<span class="p">};</span>
+
+<span class="c1">// Generador variable de sensor</span>
+<span class="nx">jsonGen</span><span class="p">.</span><span class="nx">forBlock</span><span class="p">[</span><span class="s1">&#39;get_sensor&#39;</span><span class="p">]</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">   </span><span class="kd">const</span><span class="w"> </span><span class="nx">nombre</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">block</span><span class="p">.</span><span class="nx">getFieldValue</span><span class="p">(</span><span class="s1">&#39;NUM&#39;</span><span class="p">);</span>
+<span class="w">   </span><span class="k">return</span><span class="w"> </span><span class="p">[</span><span class="nx">nombre</span><span class="p">,</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">ORDER_ATOMIC</span><span class="p">];</span>
+<span class="p">};</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-NDFfaW5kZXg=" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-NDFfaW5kZXg=" name="NDFfaW5kZXg=" role="tabpanel" tabindex="0"><div class="highlight-html notranslate"><div class="highlight"><pre><span></span><span class="cp">&lt;!DOCTYPE html&gt;</span>
+<span class="p">&lt;</span><span class="nt">html</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">head</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">meta</span> <span class="na">charset</span><span class="o">=</span><span class="s">&quot;utf-8&quot;</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">title</span><span class="p">&gt;</span>Blockly JSON API MQTT<span class="p">&lt;/</span><span class="nt">title</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;https://unpkg.com/blockly/blockly.min.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">script</span> <span class="na">src</span><span class="o">=</span><span class="s">&quot;bloques.js&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="w">   </span><span class="nt">html</span><span class="o">,</span><span class="w"> </span><span class="nt">body</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">margin</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span><span class="w"> </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">      </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">vh</span><span class="p">;</span>
+<span class="w">      </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="kc">sans-serif</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="p">#</span><span class="nn">mainContainer</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">relative</span><span class="p">;</span>
+<span class="w">      </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">      </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">vh</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="p">#</span><span class="nn">blocklyDiv</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">      </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="c">/* Botón flotante derecho */</span>
+<span class="w">   </span><span class="p">#</span><span class="nn">toggleCodeBtn</span><span class="o">,</span>
+<span class="w">   </span><span class="p">#</span><span class="nn">runBtn</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">absolute</span><span class="p">;</span>
+<span class="w">      </span><span class="k">right</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">      </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="kc">orange</span><span class="p">;</span>
+<span class="w">      </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="w">      </span><span class="k">border-radius</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="kt">px</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">      </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">18</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">      </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">12</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">      </span><span class="k">cursor</span><span class="p">:</span><span class="w"> </span><span class="kc">pointer</span><span class="p">;</span>
+<span class="w">      </span><span class="k">z-index</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="p">;</span>
+<span class="w">      </span><span class="k">box-shadow</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">0</span><span class="w"> </span><span class="mi">5</span><span class="kt">px</span><span class="w"> </span><span class="nb">rgba</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mf">0.3</span><span class="p">);</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="p">#</span><span class="nn">toggleCodeBtn</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">top</span><span class="p">:</span><span class="w"> </span><span class="mi">300</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="p">#</span><span class="nn">runBtn</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">top</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="c">/* Panel lateral derecho para JSON */</span>
+<span class="w">   </span><span class="p">#</span><span class="nn">codePanel</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">position</span><span class="p">:</span><span class="w"> </span><span class="kc">absolute</span><span class="p">;</span>
+<span class="w">      </span><span class="k">top</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">      </span><span class="k">right</span><span class="p">:</span><span class="w"> </span><span class="mi">-50</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">      </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">50</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">      </span><span class="k">height</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">      </span><span class="k">background</span><span class="p">:</span><span class="w"> </span><span class="mh">#181824</span><span class="p">;</span>
+<span class="w">      </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="kc">white</span><span class="p">;</span>
+<span class="w">      </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">20</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">      </span><span class="k">box-sizing</span><span class="p">:</span><span class="w"> </span><span class="kc">border-box</span><span class="p">;</span>
+<span class="w">      </span><span class="k">transition</span><span class="p">:</span><span class="w"> </span><span class="kc">right</span><span class="w"> </span><span class="mf">0.3</span><span class="kt">s</span><span class="w"> </span><span class="kc">ease</span><span class="p">;</span>
+<span class="w">      </span><span class="k">z-index</span><span class="p">:</span><span class="w"> </span><span class="mi">9</span><span class="p">;</span>
+<span class="w">      </span><span class="k">display</span><span class="p">:</span><span class="w"> </span><span class="kc">flex</span><span class="p">;</span>
+<span class="w">      </span><span class="k">flex-direction</span><span class="p">:</span><span class="w"> </span><span class="kc">column</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+
+<span class="w">   </span><span class="p">#</span><span class="nn">codePanel</span><span class="p">.</span><span class="nc">open</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">right</span><span class="p">:</span><span class="w"> </span><span class="mi">0</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="w">   </span><span class="p">#</span><span class="nn">codeArea</span><span class="w"> </span><span class="p">{</span>
+<span class="w">      </span><span class="k">flex</span><span class="p">:</span><span class="w"> </span><span class="mi">1</span><span class="p">;</span>
+<span class="w">      </span><span class="k">width</span><span class="p">:</span><span class="w"> </span><span class="mi">100</span><span class="kt">%</span><span class="p">;</span>
+<span class="w">      </span><span class="k">font-family</span><span class="p">:</span><span class="w"> </span><span class="kc">monospace</span><span class="p">;</span>
+<span class="w">      </span><span class="k">font-size</span><span class="p">:</span><span class="w"> </span><span class="mi">14</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">      </span><span class="k">background-color</span><span class="p">:</span><span class="w"> </span><span class="mh">#181824</span><span class="p">;</span>
+<span class="w">      </span><span class="k">color</span><span class="p">:</span><span class="w"> </span><span class="mh">#eee</span><span class="p">;</span>
+<span class="w">      </span><span class="k">border</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="w">      </span><span class="k">resize</span><span class="p">:</span><span class="w"> </span><span class="kc">none</span><span class="p">;</span>
+<span class="w">      </span><span class="k">padding</span><span class="p">:</span><span class="w"> </span><span class="mi">10</span><span class="kt">px</span><span class="p">;</span>
+<span class="w">      </span><span class="k">overflow</span><span class="p">:</span><span class="w"> </span><span class="kc">auto</span><span class="p">;</span>
+<span class="w">   </span><span class="p">}</span>
+<span class="p">&lt;/</span><span class="nt">style</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">head</span><span class="p">&gt;</span>
+
+<span class="p">&lt;</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;mainContainer&quot;</span><span class="p">&gt;</span>
+   <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;blocklyDiv&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+   <span class="cm">&lt;!-- Botón flotante derecho --&gt;</span>
+   <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;toggleCodeBtn&quot;</span><span class="p">&gt;</span><span class="ni">&amp;lt;</span>/<span class="ni">&amp;gt;</span><span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+   <span class="p">&lt;</span><span class="nt">button</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;runBtn&quot;</span><span class="p">&gt;</span>Ejecutar<span class="p">&lt;/</span><span class="nt">button</span><span class="p">&gt;</span>
+
+   <span class="cm">&lt;!-- Panel deslizante con código JSON --&gt;</span>
+   <span class="p">&lt;</span><span class="nt">div</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;codePanel&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">textarea</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;codeArea&quot;</span> <span class="na">readonly</span><span class="p">&gt;&lt;/</span><span class="nt">textarea</span><span class="p">&gt;</span>
+   <span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">div</span><span class="p">&gt;</span>
+
+<span class="cm">&lt;!-- TOOLBOX DEFINIDO --&gt;</span>
+<span class="p">&lt;</span><span class="nt">xml</span> <span class="na">id</span><span class="o">=</span><span class="s">&quot;toolbox&quot;</span> <span class="na">style</span><span class="o">=</span><span class="s">&quot;display: none&quot;</span><span class="p">&gt;</span>
+   <span class="p">&lt;</span><span class="nt">category</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;Rena 1&quot;</span> <span class="na">colour</span><span class="o">=</span><span class="s">&quot;#f19f10&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;bloque_inicar&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;enviar_comando_api&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;bloque_esperar&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;bloque_velocidad&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;bloque_gripper&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+   <span class="p">&lt;/</span><span class="nt">category</span><span class="p">&gt;</span>
+
+   <span class="p">&lt;</span><span class="nt">category</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;Sensores&quot;</span> <span class="na">colour</span><span class="o">=</span><span class="s">&quot;#f19f10&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;bloque_leer_sensor&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;get_sensor&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+   <span class="p">&lt;/</span><span class="nt">category</span><span class="p">&gt;</span>
+
+
+   <span class="p">&lt;</span><span class="nt">category</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;Valores&quot;</span> <span class="na">colour</span><span class="o">=</span> <span class="s">&quot;#2777c3&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;math_number&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;text&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;logic_boolean&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+   <span class="p">&lt;/</span><span class="nt">category</span><span class="p">&gt;</span>
+   <span class="p">&lt;</span><span class="nt">category</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;Control&quot;</span> <span class="na">colour</span><span class="o">=</span><span class="s">&quot;#2fa92f&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;bloque_if&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;bloque_for&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;bloque_if_else&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+   <span class="p">&lt;/</span><span class="nt">category</span><span class="p">&gt;</span>
+   <span class="p">&lt;</span><span class="nt">category</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;Lógica&quot;</span> <span class="na">colour</span><span class="o">=</span><span class="s">&quot;#2196f3&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;logic_compare&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;logic_operation&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;logic_boolean&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+   <span class="p">&lt;/</span><span class="nt">category</span><span class="p">&gt;</span>
+   <span class="p">&lt;</span><span class="nt">category</span> <span class="na">name</span><span class="o">=</span><span class="s">&quot;Variables&quot;</span> <span class="na">colour</span><span class="o">=</span><span class="s">&quot;#ba68c8&quot;</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;crear_variable&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;set_variable&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+      <span class="p">&lt;</span><span class="nt">block</span> <span class="na">type</span><span class="o">=</span><span class="s">&quot;get_variable&quot;</span><span class="p">&gt;&lt;/</span><span class="nt">block</span><span class="p">&gt;</span>
+   <span class="p">&lt;/</span><span class="nt">category</span><span class="p">&gt;</span>
+
+<span class="p">&lt;/</span><span class="nt">xml</span><span class="p">&gt;</span>
+
+   <span class="p">&lt;</span><span class="nt">script</span><span class="p">&gt;</span>
+<span class="w">      </span><span class="kd">const</span><span class="w"> </span><span class="nx">workspace</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">Blockly</span><span class="p">.</span><span class="nx">inject</span><span class="p">(</span><span class="s1">&#39;blocklyDiv&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nx">toolbox</span><span class="o">:</span><span class="w"> </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s1">&#39;toolbox&#39;</span><span class="p">),</span>
+<span class="w">         </span><span class="nx">theme</span><span class="o">:</span><span class="w"> </span><span class="nx">Blockly</span><span class="p">.</span><span class="nx">Theme</span><span class="p">.</span><span class="nx">defineTheme</span><span class="p">(</span><span class="s1">&#39;miTemaClaro&#39;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">base</span><span class="o">:</span><span class="w"> </span><span class="nx">Blockly</span><span class="p">.</span><span class="nx">Themes</span><span class="p">.</span><span class="nx">Classic</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">fontStyle</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">size</span><span class="o">:</span><span class="w"> </span><span class="mf">14</span><span class="w"> </span><span class="p">}</span>
+<span class="w">         </span><span class="p">}),</span>
+<span class="w">         </span><span class="nx">scrollbars</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">         </span><span class="nx">trashcan</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="p">,</span>
+<span class="w">         </span><span class="nx">zoom</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="nx">controls</span><span class="o">:</span><span class="w"> </span><span class="kc">true</span><span class="w"> </span><span class="p">},</span>
+<span class="w">         </span><span class="nx">renderer</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;zelos&quot;</span><span class="p">,</span>
+<span class="w">         </span><span class="nx">sounds</span><span class="o">:</span><span class="w"> </span><span class="kc">false</span>
+<span class="w">      </span><span class="p">});</span>
+
+<span class="w">      </span><span class="k">async</span><span class="w"> </span><span class="kd">function</span><span class="w"> </span><span class="nx">ejecutarComandos</span><span class="p">()</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">init</span><span class="p">(</span><span class="nx">workspace</span><span class="p">);</span>
+<span class="w">         </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">[];</span>
+<span class="w">         </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">workspaceToCode</span><span class="p">(</span><span class="nx">workspace</span><span class="p">);</span>
+<span class="w">         </span><span class="kd">const</span><span class="w"> </span><span class="nx">comandos</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nx">jsonGen</span><span class="p">.</span><span class="nx">commands_</span><span class="p">;</span>
+
+<span class="w">         </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;codeArea&quot;</span><span class="p">).</span><span class="nx">value</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">comandos</span><span class="p">,</span><span class="w"> </span><span class="kc">null</span><span class="p">,</span><span class="w"> </span><span class="mf">2</span><span class="p">);</span>
+<span class="w">         </span><span class="k">try</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="kd">const</span><span class="w"> </span><span class="nx">res</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">fetch</span><span class="p">(</span><span class="s2">&quot;http://localhost:8000/api/comando&quot;</span><span class="p">,</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nx">method</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;POST&quot;</span><span class="p">,</span>
+<span class="w">            </span><span class="nx">headers</span><span class="o">:</span><span class="w"> </span><span class="p">{</span><span class="w"> </span><span class="s2">&quot;Content-Type&quot;</span><span class="o">:</span><span class="w"> </span><span class="s2">&quot;application/json&quot;</span><span class="w"> </span><span class="p">},</span>
+<span class="w">            </span><span class="nx">body</span><span class="o">:</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">({</span><span class="w"> </span><span class="nx">comandos</span><span class="w"> </span><span class="p">})</span>
+<span class="w">            </span><span class="p">});</span>
+<span class="w">            </span><span class="kd">const</span><span class="w"> </span><span class="nx">data</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="k">await</span><span class="w"> </span><span class="nx">res</span><span class="p">.</span><span class="nx">json</span><span class="p">();</span>
+<span class="w">            </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;codeArea&quot;</span><span class="p">).</span><span class="nx">value</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s2">&quot;\n\n✅ Respuesta: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nb">JSON</span><span class="p">.</span><span class="nx">stringify</span><span class="p">(</span><span class="nx">data</span><span class="p">);</span>
+<span class="w">         </span><span class="p">}</span><span class="w"> </span><span class="k">catch</span><span class="w"> </span><span class="p">(</span><span class="nx">err</span><span class="p">)</span><span class="w"> </span><span class="p">{</span>
+<span class="w">            </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;codeArea&quot;</span><span class="p">).</span><span class="nx">value</span><span class="w"> </span><span class="o">+=</span><span class="w"> </span><span class="s2">&quot;\n\n❌ Error: &quot;</span><span class="w"> </span><span class="o">+</span><span class="w"> </span><span class="nx">err</span><span class="p">;</span>
+<span class="w">         </span><span class="p">}</span>
+<span class="w">      </span><span class="p">}</span>
+
+<span class="w">      </span><span class="c1">// Mostrar/ocultar panel</span>
+<span class="w">      </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;toggleCodeBtn&quot;</span><span class="p">).</span><span class="nx">onclick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;codePanel&quot;</span><span class="p">).</span><span class="nx">classList</span><span class="p">.</span><span class="nx">toggle</span><span class="p">(</span><span class="s2">&quot;open&quot;</span><span class="p">);</span>
+<span class="w">      </span><span class="p">};</span>
+<span class="w">      </span><span class="c1">// Ejecutar comandos (solo botón ✉️)</span>
+<span class="w">      </span><span class="nb">document</span><span class="p">.</span><span class="nx">getElementById</span><span class="p">(</span><span class="s2">&quot;runBtn&quot;</span><span class="p">).</span><span class="nx">onclick</span><span class="w"> </span><span class="o">=</span><span class="w"> </span><span class="p">()</span><span class="w"> </span><span class="p">=&gt;</span><span class="w"> </span><span class="p">{</span>
+<span class="w">         </span><span class="nx">ejecutarComandos</span><span class="p">();</span>
+<span class="w">      </span><span class="p">};</span>
+<span class="w">   </span><span class="p">&lt;/</span><span class="nt">script</span><span class="p">&gt;</span>
+
+
+<span class="p">&lt;/</span><span class="nt">body</span><span class="p">&gt;</span>
+<span class="p">&lt;/</span><span class="nt">html</span><span class="p">&gt;</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-NDFfbWFpbi5weQ==" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-NDFfbWFpbi5weQ==" name="NDFfbWFpbi5weQ==" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">fastapi</span><span class="w"> </span><span class="kn">import</span> <span class="n">FastAPI</span><span class="p">,</span> <span class="n">Request</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pydantic</span><span class="w"> </span><span class="kn">import</span> <span class="n">BaseModel</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">asyncio</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">paho.mqtt.client</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mqtt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">fastapi.middleware.cors</span><span class="w"> </span><span class="kn">import</span> <span class="n">CORSMiddleware</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+
+<span class="n">mensaje_actuadores</span><span class="o">=</span><span class="p">{</span>
+   <span class="s2">&quot;auto&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;activar&quot;</span>    <span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+      <span class="s2">&quot;velocidad&quot;</span>  <span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="c1"># 0 a 100%</span>
+      <span class="s2">&quot;led&quot;</span>        <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># 0 apagado, 1 abierto</span>
+      <span class="s2">&quot;gripper&quot;</span>    <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># 0 cerrado, 1 abierto</span>
+      <span class="s2">&quot;movimiento&quot;</span> <span class="p">:</span> <span class="mi">0</span><span class="p">,</span> <span class="c1"># 0 detenido, 1 adelante, 2 giro izquierda, 3 giro derecha, 4 giro 180 grados.</span>
+      <span class="p">},</span>
+   <span class="s2">&quot;manual&quot;</span><span class="p">:{</span>
+      <span class="s2">&quot;estado&quot;</span><span class="p">:</span>      <span class="mi">0</span><span class="p">,</span>
+      <span class="s2">&quot;vel_derecho&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+      <span class="s2">&quot;vel_izquierdo&quot;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span>
+      <span class="s2">&quot;angulo_gripper&quot;</span><span class="p">:</span> <span class="mi">0</span><span class="p">,</span>
+      <span class="p">}</span>
+<span class="p">}</span>
+
+<span class="n">app</span> <span class="o">=</span> <span class="n">FastAPI</span><span class="p">()</span>
+
+<span class="n">app</span><span class="o">.</span><span class="n">add_middleware</span><span class="p">(</span>
+   <span class="n">CORSMiddleware</span><span class="p">,</span>
+   <span class="n">allow_origins</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+   <span class="n">allow_credentials</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+   <span class="n">allow_methods</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+   <span class="n">allow_headers</span><span class="o">=</span><span class="p">[</span><span class="s2">&quot;*&quot;</span><span class="p">],</span>
+<span class="p">)</span>
+
+<span class="n">estado_event</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+<span class="n">sensor_event</span> <span class="o">=</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">Event</span><span class="p">()</span>
+
+<span class="c1"># MQTT</span>
+<span class="n">mqtt_client</span> <span class="o">=</span> <span class="kc">None</span>
+<span class="n">robot</span>       <span class="o">=</span> <span class="kc">None</span>
+
+<span class="n">broker</span> <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span>
+<span class="n">port</span> <span class="o">=</span> <span class="mi">1883</span>
+
+<span class="n">topic_estado</span>  <span class="o">=</span> <span class="s2">&quot;/estado&quot;</span>
+<span class="n">topic_acciones</span> <span class="o">=</span> <span class="s2">&quot;/acciones&quot;</span>
+<span class="n">topic_sensores</span> <span class="o">=</span> <span class="s2">&quot;/sensores&quot;</span>
+
+<span class="c1"># Variables de sensores</span>
+<span class="n">ultrasonico</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="n">qtr8</span> <span class="o">=</span> <span class="mi">0</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">on_connect</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">rc</span><span class="p">):</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Conectado a MQTT con resultado: &quot;</span><span class="p">,</span> <span class="n">rc</span><span class="p">)</span>
+   <span class="n">client</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">robot</span><span class="o">+</span><span class="n">topic_estado</span><span class="p">)</span>
+   <span class="n">client</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">robot</span><span class="o">+</span><span class="n">topic_sensores</span><span class="p">)</span>
+
+<span class="k">def</span><span class="w"> </span><span class="nf">on_message</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+   <span class="k">global</span> <span class="n">ultrasonico</span><span class="p">,</span> <span class="n">qtr8</span>
+
+   <span class="c1">#print(f&quot;Mensaje MQTT: {msg.topic} =&gt; {msg.payload.decode()}&quot;)</span>
+   <span class="n">payload</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">decode</span><span class="p">()</span>
+
+   <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">topic</span> <span class="o">==</span> <span class="n">robot</span><span class="o">+</span><span class="n">topic_estado</span><span class="p">:</span>
+      <span class="n">estado_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+   <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">topic</span> <span class="o">==</span> <span class="n">robot</span><span class="o">+</span><span class="n">topic_sensores</span><span class="p">:</span>
+      <span class="n">sensores</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+      <span class="n">ultrasonico</span> <span class="o">=</span> <span class="n">sensores</span><span class="p">[</span><span class="s2">&quot;ultra&quot;</span><span class="p">]</span>
+      <span class="n">qtr8</span> <span class="o">=</span> <span class="n">sensores</span><span class="p">[</span><span class="s2">&quot;qtr8&quot;</span><span class="p">]</span>
+      <span class="c1">#print(f&#39;Valor del ultrasonico {ultrasonico}, {qtr8}&#39;)</span>
+      <span class="n">sensor_event</span><span class="o">.</span><span class="n">set</span><span class="p">()</span>
+
+
+<span class="c1"># MODELO AJUSTADO para recibir lista de comandos</span>
+<span class="k">class</span><span class="w"> </span><span class="nc">Mensaje</span><span class="p">(</span><span class="n">BaseModel</span><span class="p">):</span>
+   <span class="n">comandos</span><span class="p">:</span> <span class="nb">list</span>
+
+<span class="nd">@app</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;/&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">root</span><span class="p">():</span>
+   <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;mensaje&quot;</span><span class="p">:</span> <span class="s2">&quot;API de control del robot con MQTT&quot;</span><span class="p">}</span>
+
+<span class="c1"># 🚀 FUNCIÓN RECURSIVA PARA INTERPRETAR COMANDOS</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">ejecutar_instruccion</span><span class="p">(</span><span class="n">instr</span><span class="p">):</span>
+   <span class="k">global</span> <span class="n">mqtt_client</span><span class="p">,</span> <span class="n">robot</span>
+   <span class="k">if</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;accion&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;publicar&quot;</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;mensaje&quot;</span><span class="p">][</span><span class="s2">&quot;valor&quot;</span><span class="p">]</span>   <span class="o">==</span> <span class="s2">&quot;adelante&quot;</span><span class="p">:</span>
+            <span class="n">mensaje_actuadores</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">][</span><span class="s2">&quot;movimiento&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+      <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;mensaje&quot;</span><span class="p">][</span><span class="s2">&quot;valor&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;giro_izquierda&quot;</span><span class="p">:</span>
+            <span class="n">mensaje_actuadores</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">][</span><span class="s2">&quot;movimiento&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">2</span>
+      <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;mensaje&quot;</span><span class="p">][</span><span class="s2">&quot;valor&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;giro_derecha&quot;</span><span class="p">:</span>
+            <span class="n">mensaje_actuadores</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">][</span><span class="s2">&quot;movimiento&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+      <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;mensaje&quot;</span><span class="p">][</span><span class="s2">&quot;valor&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;giro_180&quot;</span><span class="p">:</span>
+            <span class="n">mensaje_actuadores</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">][</span><span class="s2">&quot;movimiento&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">4</span>
+      <span class="n">mqtt_client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">robot</span><span class="o">+</span><span class="n">topic_acciones</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">mensaje_actuadores</span><span class="p">))</span>
+      <span class="k">try</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span><span class="n">estado_event</span><span class="o">.</span><span class="n">wait</span><span class="p">(),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+            <span class="n">mensaje_actuadores</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">][</span><span class="s2">&quot;movimiento&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">estado_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+      <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
+            <span class="n">mensaje_actuadores</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">][</span><span class="s2">&quot;movimiento&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;⚠️ Timeout esperando /estado&quot;</span><span class="p">)</span>
+
+      <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+   <span class="k">if</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;accion&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;leer_sensor&quot;</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Valuar Actual del sensor: </span><span class="si">{</span><span class="n">ultrasonico</span><span class="si">}</span><span class="s1">, </span><span class="si">{</span><span class="n">qtr8</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+      <span class="k">try</span><span class="p">:</span>
+            <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">wait_for</span><span class="p">(</span><span class="n">estado_event</span><span class="o">.</span><span class="n">wait</span><span class="p">(),</span> <span class="n">timeout</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+            <span class="n">sensor_event</span><span class="o">.</span><span class="n">clear</span><span class="p">()</span>
+      <span class="k">except</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">TimeoutError</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;⚠️ Timeout esperando /sensor&quot;</span><span class="p">)</span>
+      <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+   <span class="k">if</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;accion&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;set_velocidad&quot;</span><span class="p">:</span>
+      <span class="n">mensaje_actuadores</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">][</span><span class="s2">&quot;velocidad&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;mensaje&quot;</span><span class="p">][</span><span class="s2">&quot;porcentaje&quot;</span><span class="p">]</span>
+      <span class="n">mqtt_client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">robot</span><span class="o">+</span><span class="n">topic_acciones</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">mensaje_actuadores</span><span class="p">))</span>
+      <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+   <span class="k">if</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;accion&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;set_gripper&quot;</span><span class="p">:</span>
+      <span class="k">if</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;mensaje&quot;</span><span class="p">][</span><span class="s2">&quot;valor&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Abrir&quot;</span><span class="p">:</span>
+            <span class="n">mensaje_actuadores</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">][</span><span class="s2">&quot;gripper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span>
+
+      <span class="k">if</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;mensaje&quot;</span><span class="p">][</span><span class="s2">&quot;valor&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;Cerrar&quot;</span><span class="p">:</span>
+            <span class="n">mensaje_actuadores</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">][</span><span class="s2">&quot;gripper&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+      <span class="n">mqtt_client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">robot</span><span class="o">+</span><span class="n">topic_acciones</span><span class="p">,</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">mensaje_actuadores</span><span class="p">))</span>
+      <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.1</span><span class="p">)</span>
+
+   <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;accion&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;if&quot;</span><span class="p">:</span>
+      <span class="n">cond</span> <span class="o">=</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;expresion&quot;</span><span class="p">]</span>
+      <span class="k">if</span> <span class="nb">eval</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cond</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;entonces&quot;</span><span class="p">]:</span>
+               <span class="k">await</span> <span class="n">ejecutar_instruccion</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+
+   <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;accion&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;if_else&quot;</span><span class="p">:</span>
+      <span class="n">cond</span> <span class="o">=</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;expresion&quot;</span><span class="p">]</span>
+      <span class="k">if</span> <span class="nb">eval</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;</span><span class="si">{</span><span class="n">cond</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;entonces&quot;</span><span class="p">]:</span>
+               <span class="k">await</span> <span class="n">ejecutar_instruccion</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+      <span class="k">else</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;sino&quot;</span><span class="p">]:</span>
+               <span class="k">await</span> <span class="n">ejecutar_instruccion</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+
+   <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;accion&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;for&quot;</span><span class="p">:</span>
+      <span class="n">veces</span> <span class="o">=</span> <span class="n">instr</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">&quot;repeticiones&quot;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+      <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">veces</span><span class="p">):</span>
+            <span class="k">for</span> <span class="n">sub</span> <span class="ow">in</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;hacer&quot;</span><span class="p">]:</span>
+               <span class="k">await</span> <span class="n">ejecutar_instruccion</span><span class="p">(</span><span class="n">sub</span><span class="p">)</span>
+
+   <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;accion&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;esperar&quot;</span><span class="p">:</span>
+      <span class="n">time</span> <span class="o">=</span>  <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;mensaje&quot;</span><span class="p">][</span><span class="s2">&quot;timer&quot;</span><span class="p">]</span>
+      <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="n">time</span><span class="p">)</span>
+
+   <span class="k">elif</span> <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;accion&quot;</span><span class="p">]</span> <span class="o">==</span> <span class="s2">&quot;iniciar&quot;</span><span class="p">:</span>
+      <span class="n">robot</span> <span class="o">=</span>  <span class="n">instr</span><span class="p">[</span><span class="s2">&quot;mensaje&quot;</span><span class="p">][</span><span class="s2">&quot;nombre&quot;</span><span class="p">]</span>
+      <span class="n">mqtt_client</span> <span class="o">=</span> <span class="n">mqtt</span><span class="o">.</span><span class="n">Client</span><span class="p">()</span>
+      <span class="n">mqtt_client</span><span class="o">.</span><span class="n">on_connect</span> <span class="o">=</span> <span class="n">on_connect</span>
+      <span class="n">mqtt_client</span><span class="o">.</span><span class="n">on_message</span> <span class="o">=</span> <span class="n">on_message</span>
+      <span class="n">mqtt_client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">broker</span><span class="p">,</span> <span class="n">port</span><span class="p">)</span>
+      <span class="n">mqtt_client</span><span class="o">.</span><span class="n">loop_start</span><span class="p">()</span>
+      <span class="k">await</span> <span class="n">asyncio</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span>
+
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">ejecutar_script</span><span class="p">(</span><span class="n">script</span><span class="p">):</span>
+   <span class="k">for</span> <span class="n">instruccion</span> <span class="ow">in</span> <span class="n">script</span><span class="p">:</span>
+      <span class="k">await</span> <span class="n">ejecutar_instruccion</span><span class="p">(</span><span class="n">instruccion</span><span class="p">)</span>
+   <span class="k">return</span> <span class="p">{</span><span class="s2">&quot;status&quot;</span><span class="p">:</span> <span class="s2">&quot;ok&quot;</span><span class="p">}</span>
+
+<span class="c1"># ✅ CONEXIÓN ENTRE FRONTEND Y BACKEND</span>
+<span class="nd">@app</span><span class="o">.</span><span class="n">post</span><span class="p">(</span><span class="s2">&quot;/api/comando&quot;</span><span class="p">)</span>
+<span class="k">async</span> <span class="k">def</span><span class="w"> </span><span class="nf">recibir_comandos</span><span class="p">(</span><span class="n">mensaje</span><span class="p">:</span> <span class="n">Mensaje</span><span class="p">):</span>
+   <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;➡️ Comandos recibidos: </span><span class="si">{</span><span class="n">mensaje</span><span class="o">.</span><span class="n">comandos</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+   <span class="n">resultado</span> <span class="o">=</span> <span class="k">await</span> <span class="n">ejecutar_script</span><span class="p">(</span><span class="n">mensaje</span><span class="o">.</span><span class="n">comandos</span><span class="p">)</span>
+   <span class="k">return</span> <span class="n">resultado</span>
+</pre></div>
+</div>
+</div><div aria-labelledby="tab-1-NDFfbWFpbi5weQ==-1" class="sphinx-tabs-panel group-tab" hidden="true" id="panel-1-NDFfbWFpbi5weQ==-1" name="NDFfbWFpbi5weQ==-1" role="tabpanel" tabindex="0"><div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">paho.mqtt.client</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">mqtt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">json</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">time</span>
+
+<span class="c1"># Configuración del broker</span>
+<span class="n">BROKER</span>            <span class="o">=</span> <span class="s2">&quot;localhost&quot;</span> <span class="c1"># Ip del computador o localhost</span>
+<span class="n">TOPIC_SUB</span>         <span class="o">=</span> <span class="s2">&quot;Rena1/acciones&quot;</span>
+<span class="n">TOPIC_PUB</span>         <span class="o">=</span> <span class="s2">&quot;Rena1/sensores&quot;</span>
+<span class="n">CLIENT_ID</span>         <span class="o">=</span> <span class="s2">&quot;cliente_rm1&quot;</span>
+
+<span class="c1"># Callback cuando se conecta al broker</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_connect</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">flags</span><span class="p">,</span> <span class="n">rc</span><span class="p">,</span> <span class="n">properties</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+   <span class="k">if</span> <span class="n">rc</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Conectado al broker MQTT&quot;</span><span class="p">)</span>
+      <span class="n">client</span><span class="o">.</span><span class="n">subscribe</span><span class="p">(</span><span class="n">TOPIC_SUB</span><span class="p">)</span>
+   <span class="k">else</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s2">&quot;Error de conexión: código </span><span class="si">{</span><span class="n">rc</span><span class="si">}</span><span class="s2">&quot;</span><span class="p">)</span>
+
+<span class="c1"># Callback al recibir un mensaje</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">on_message</span><span class="p">(</span><span class="n">client</span><span class="p">,</span> <span class="n">userdata</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+   <span class="k">try</span><span class="p">:</span>
+      <span class="n">mensaje</span> <span class="o">=</span> <span class="n">msg</span><span class="o">.</span><span class="n">payload</span><span class="o">.</span><span class="n">decode</span><span class="p">(</span><span class="s2">&quot;utf-8&quot;</span><span class="p">)</span>
+      <span class="n">data</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">loads</span><span class="p">(</span><span class="n">mensaje</span><span class="p">)</span>
+      <span class="k">if</span> <span class="n">msg</span><span class="o">.</span><span class="n">topic</span> <span class="o">==</span> <span class="n">TOPIC_SUB</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Mensaje recido en la ESP32:&quot;</span><span class="p">,</span> <span class="n">data</span><span class="p">[</span><span class="s2">&quot;auto&quot;</span><span class="p">])</span>
+   <span class="k">except</span> <span class="ne">Exception</span> <span class="k">as</span> <span class="n">e</span><span class="p">:</span>
+      <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;Error procesando mensaje:&quot;</span><span class="p">,</span> <span class="n">e</span><span class="p">)</span>
+
+<span class="n">client</span> <span class="o">=</span> <span class="n">mqtt</span><span class="o">.</span><span class="n">Client</span><span class="p">(</span><span class="n">client_id</span><span class="o">=</span><span class="n">CLIENT_ID</span><span class="p">,</span> <span class="n">protocol</span><span class="o">=</span><span class="n">mqtt</span><span class="o">.</span><span class="n">MQTTv311</span><span class="p">)</span>
+
+<span class="c1"># Asociar funciones de callback</span>
+<span class="n">client</span><span class="o">.</span><span class="n">on_connect</span> <span class="o">=</span> <span class="n">on_connect</span>
+<span class="n">client</span><span class="o">.</span><span class="n">on_message</span> <span class="o">=</span> <span class="n">on_message</span>
+
+<span class="c1"># Conexión al broker</span>
+<span class="n">client</span><span class="o">.</span><span class="n">connect</span><span class="p">(</span><span class="n">BROKER</span><span class="p">)</span>
+
+<span class="c1"># Iniciar loop en segundo plano</span>
+<span class="n">client</span><span class="o">.</span><span class="n">loop_start</span><span class="p">()</span>
+
+<span class="c1"># Envío continuo de mensajes cada segundo</span>
+<span class="k">try</span><span class="p">:</span>
+   <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+      <span class="n">payload</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;ultra&quot;</span><span class="p">:</span> <span class="mi">8</span><span class="p">,</span>
+            <span class="s2">&quot;qtr8&quot;</span> <span class="p">:</span> <span class="mi">5</span><span class="p">,</span>
+      <span class="p">}</span>
+      <span class="n">mensaje</span> <span class="o">=</span> <span class="n">json</span><span class="o">.</span><span class="n">dumps</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+      <span class="n">client</span><span class="o">.</span><span class="n">publish</span><span class="p">(</span><span class="n">TOPIC_PUB</span><span class="p">,</span> <span class="n">mensaje</span><span class="p">)</span>
+      <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="k">except</span> <span class="ne">KeyboardInterrupt</span><span class="p">:</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;</span><span class="se">\n</span><span class="s2"> Finalizando conexión MQTT...&quot;</span><span class="p">)</span>
+
+<span class="k">finally</span><span class="p">:</span>
+   <span class="n">client</span><span class="o">.</span><span class="n">loop_stop</span><span class="p">()</span>
+   <span class="n">client</span><span class="o">.</span><span class="n">disconnect</span><span class="p">()</span>
+   <span class="nb">print</span><span class="p">(</span><span class="s2">&quot; Desconectado correctamente.&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div></div>
+</section>
+<section id="aplicacion-movil">
+<h2>Aplicación Movil<a class="headerlink" href="#aplicacion-movil" title="Link to this heading"></a></h2>
+<p>Si tu objetivo es crear una App para celular (Android o iOS) basada en los index.html que ya tienes con Blockly, aquí van las mejores formas de convertirlo en una app móvil real.
+🚀 OPCIÓN RECOMENDADA: Convertir a App Móvil con Capacitor.js + Ionic (o Cordova)</p>
+<p>Esta es la forma más directa y moderna de transformar tu HTML + Blockly en una app móvil instalable.
+✅ PASOS CON Capacitor.js (de Ionic)</p>
+<ol class="arabic simple">
+<li><p>📁 Estructura tu proyecto</p></li>
+</ol>
+<p>Organiza tus archivos:</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mi_app_movil/
+├──<span class="w"> </span>index.html<span class="w">           </span>←<span class="w"> </span>Tu<span class="w"> </span>interfaz<span class="w"> </span>Blockly
+├──<span class="w"> </span>02_bloques.js<span class="w">        </span>←<span class="w"> </span>Tus<span class="w"> </span>bloques<span class="w"> </span>personalizados
+├──<span class="w"> </span>main.css<span class="w"> </span>/<span class="w"> </span>estilos
+├──<span class="w"> </span>capacitor.config.ts
+├──<span class="w"> </span>android/<span class="w">             </span>←<span class="w"> </span>Se<span class="w"> </span>generará<span class="w"> </span>automáticamente
+├──<span class="w"> </span>ios/<span class="w">                 </span>←<span class="w"> </span>Se<span class="w"> </span>generará<span class="w"> </span>si<span class="w"> </span>usas<span class="w"> </span>Mac
+</pre></div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>⚙️ Instala Capacitor</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npm<span class="w"> </span>init<span class="w"> </span>-y
+npm<span class="w"> </span>install<span class="w"> </span>@capacitor/core<span class="w"> </span>@capacitor/cli
+npx<span class="w"> </span>cap<span class="w"> </span>init<span class="w"> </span>blocklyApp<span class="w"> </span>com.avigtech.blocklyapp
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>App name: blocklyApp</p></li>
+<li><p>App id: com.avigtech.blocklyapp</p></li>
+</ul>
+<ol class="arabic simple" start="3">
+<li><p>📂 Crea una carpeta www/ y mueve tus archivos</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>mkdir<span class="w"> </span>www
+mv<span class="w"> </span>index.html<span class="w"> </span>www/
+mv<span class="w"> </span>*.js<span class="w"> </span>www/
+</pre></div>
+</div>
+<ol class="arabic simple" start="4">
+<li><p>🚀 Agrega plataforma Android</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npx<span class="w"> </span>cap<span class="w"> </span>add<span class="w"> </span>android
+</pre></div>
+</div>
+<ol class="arabic simple" start="5">
+<li><p>📲 Abre y compila la app en Android Studio</p></li>
+</ol>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>npx<span class="w"> </span>cap<span class="w"> </span>open<span class="w"> </span>android
+</pre></div>
+</div>
+<p>Desde ahí puedes compilar y generar el APK para instalarlo en tu celular.
+✅ Para enviar datos a backend o MQTT</p>
+<p>Si ya tienes WebSocket o MQTT en tu HTML, funciona igual en el celular, solo asegúrate de que la IP sea accesible desde el dispositivo (por ejemplo, ws://192.168.X.X:5678).
+✅ ¿Y para iOS?</p>
+<p>Puedes hacer npx cap add ios, pero necesitas macOS + Xcode. Android es mucho más directo.
+📦 ¿Y si no quieres usar Capacitor?</p>
+<p>También puedes usar:</p>
+<ul class="simple">
+<li><p>Cordova (más antiguo)</p></li>
+<li><p>TWA (Trusted Web Activities) para empaquetar un sitio web como app en Android</p></li>
+<li><p>PWA (Progressive Web App) que se instala desde Chrome sin subir a Play Store</p></li>
+</ul>
+<p>🧠 ¿Qué debo cuidar en mi index.html?</p>
+<ul class="simple">
+<li><p>Elimina rutas absolutas (<a class="reference external" href="file:///">file:///</a>) y usa solo archivos locales o relativos</p></li>
+<li><p>Evita librerías externas si no tienes conexión</p></li>
+<li><p>Si usas WebSocket/MQTT, el servidor debe estar accesible desde el celular</p></li>
+</ul>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Pie de página">
+        <a href="../tema_2/0_electronica.html" class="btn btn-neutral float-left" title="Instalacion Arduino ID" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Anterior</a>
+        <a href="../tema_4/0_conf.html" class="btn btn-neutral float-right" title="PySide6" accesskey="n" rel="next">Siguiente <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Derechos de autor 2025, AvigTech.</p>
+  </div>
+
+  Compilado con <a href="https://www.sphinx-doc.org/">Sphinx</a> usando un
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">tema</a>
+    proporcionado por <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
