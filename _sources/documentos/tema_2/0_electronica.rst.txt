@@ -1,111 +1,92 @@
-Instalacion Arduino ID 
-======================
+Componentes Electrónicos
+========================
 
-Arduino IDE 2.x
----------------
+Placa de Control
+----------------
 
-Una vez configurado mosquitto, es necesario descargar arduino IDE, el
-programa que se utilazará para programar la ESP32.
+La **placa de control** del RENA-BOT contiene un diseño **PCB/SMD** optimizado para educación.  
+Permite la integración de motores, sensores y actuadores de manera ordenada, con conectores accesibles y pines de expansión para futuros proyectos.  
+Está basada en un microcontrolador **ESP32 WROOM 1**, lo que brinda flexibilidad para programar el robot con distintos entornos como **Arduino IDE, Python o fREERTOS**.  
 
-.. _instalación-1:
 
-Instalación
-~~~~~~~~~~~
+.. figure:: ./img/placa_control.jpg
+   :alt: modelorobot
+   :align: center
+   :width: 400px
 
-1. **Descargar Arduino IDE**
+   Placa de Control v1
 
-Enlace de descargar, AppImage
-`arduino <https://www.arduino.cc/en/software/>`__
+Sensores
+--------
 
-En la carpeta donde se descargó el AppImage, cambiar el nombre al
-archivo descargado por ``arduino-ide``
+El RENA-BOT incluye la siguiente lista de sensores, los cuales permiten que el robot interactúe con su entorno y ejecute diferentes actividades educativas:  
 
-.. code:: bash
+Seguidor de línea
+~~~~~~~~~~~~~~~~~
 
-   sudo apt update
-   sudo apt upgrade
-   sudo install libfuse2
-   sudo chmod +x arduino-ide.AppImage
-   ./arduino-ide.AppImage
+El sensor **QTR8** está compuesto por un arreglo de sensores infrarrojos que permiten detectar el contraste entre superficies claras y oscuras.  
+Su uso principal es el seguimiento de trayectorias o líneas en el suelo, lo que facilita actividades como **robots seguidores de línea** o **laberintos**.  
 
-2. **Instalar soporte para ESP32**
+Sensor de distancia
+~~~~~~~~~~~~~~~~~~~
 
-   1. Ir a ``Archivo → Preferencias``
-   2. En el campo **URLs adicionales para tarjetas**, agregar:
+El sensor **ultrasónico HC-SR04** mide la distancia hasta un objeto enviando y recibiendo ondas ultrasónicas.  
+Se utiliza para evitar obstáculos, medir proximidad o ejecutar maniobras de navegación segura en entornos controlados.  
 
-   ::
+Sensor de intensidad lumínica
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-      https://espressif.github.io/arduino-esp32/package_esp32_index.json
+El sensor **LDR (Light Dependent Resistor)** cambia su resistencia según la cantidad de luz recibida.  
+Se usa para medir niveles de iluminación en el ambiente, permitiendo actividades como:  
+- Detección de luz y oscuridad.  
+- Encendido automático de luces.  
+- Reacciones del robot a diferentes condiciones de iluminación.  
 
-   3. Ir a ``Herramientas → Placa → Gestor de tarjetas``
-   4. Buscar ``esp32`` e instalar **versión 3.x**
+Sensor de temperatura
+~~~~~~~~~~~~~~~~~~~~~
 
-Esta versión es compatible con las últimas bibliotecas MQTT y WiFi.
+El **LM35** es un sensor analógico de temperatura que entrega una salida proporcional a los grados Celsius.  
+Permite medir la temperatura del ambiente de manera sencilla y precisa, con aplicaciones educativas en:  
+- Experimentos de ciencia y medio ambiente.  
+- Registro de condiciones térmicas.  
+- Automatización básica de sistemas sensibles a la temperatura.  
 
---------------
+Actuadores
+----------
 
-3. Acceso a puertos USB**\*
+El RENA-BOT incluye la siguiente lista de actuadores, los cuales permiten que el robot realice acciones físicas: 
 
-El ESP32 se conecta como un dispositivo serie (``/dev/ttyUSB*`` o
-``/dev/ttyACM*``) generalmente la conexión se realiza en el puerto
-ttyUSB. Para acceder sin sudo:
+Motores DC
+~~~~~~~~~~
 
-Añadir usuario a grupo dialout*\*
+Los **motores de corriente directa (DC)** son los responsables de mover el robot.  
+Se encuentran acoplados a reductores que aumentan el torque y permiten un movimiento controlado de las ruedas.  
+Su uso principal es el desplazamiento del robot, aplicando control diferencial (mover ambos motores a distinta velocidad/dirección para girar, avanzar o retroceder).  
 
-.. code:: bash
+Servomotor
+~~~~~~~~~~
 
-   sudo usermod -aG dialout $USER
+El **servomotor SG90** es un actuador de pequeño tamaño que permite un movimiento angular limitado (0° a 180°).  
+Se utiliza en el RENA-BOT para controlar eL manipulador de objetos. 
 
-Reiniciar sesión para aplicar cambios.
 
-Ver dispositivos conectados
+Fuente de energía
+-----------------
 
-.. code:: bash
+El RENA-BOT utiliza una batería recargable **LiPo (Polímero de Litio) de 2 celdas (2S), 7.4 V, 1500 mAh y 35C**.  
 
-   ls /dev/ttyUSB*
+Características principales:  
+- **Voltaje nominal:** 7.4 V (3.7 V por celda).  
+- **Capacidad:** 1500 mAh, lo que ofrece un tiempo de operación adecuado para actividades educativas de corta y mediana duración.  
+- **Tasa de descarga:** 35C, permitiendo suministrar la corriente suficiente para los motores y actuadores del robot sin caídas de voltaje.  
 
-Ver cambios al conectar o desconectar
+Recomendaciones de seguridad:  
+- Nunca descargar la batería por debajo de **6.0 V (3.0 V por celda)**, ya que puede dañarse permanentemente.  
+- Utilizar siempre un cargador balanceado para LiPo, que garantice la seguridad y prolongue la vida útil de la batería.  
+- Evitar golpes, perforaciones o exposición a altas temperaturas.  
+- Durante el almacenamiento prolongado, mantener la batería en un nivel de **carga de almacenamiento (~3.8 V por celda)**.  
 
-.. code:: bash
+.. tip::
+   Con un uso responsable, esta batería puede tener una larga vida útil y es suficiente para múltiples sesiones educativas antes de requerir recarga.
 
-   watch -n 1 ls /dev/ttyUSB*
-
---------------
-
-4. Instalación de bibliotecas recomendadas en Arduino IDE
-
-Tabla de librerías recomendadas para tu proyecto ESP32 con WiFiManager y MQTT
-
-.. list-table::
-   :header-rows: 1
-   :widths: 15 20 20 60
-
-   * - Librería
-     - Autor
-     - Versión recomendada
-     - Notas importantes
-   * - WiFiManager
-     - tzapu
-     - 2.0.17
-     - Compatible con ESP32 core 3.x. Asegura el uso del namespace correcto para ESP32. Soporta parámetros personalizados.
-   * - WiFi
-     - Espressif
-     - Incluida en el core
-     - No requiere instalación manual. Ya viene con el core de ESP32.
-   * - EEPROM
-     - Espressif
-     - Incluida en el core
-     - Opcional migrar a Preferences si deseas mayor robustez.
-   * - Websockets
-     - Markus Sattler
-     - 2.3.6
-     - Conexion Websockets y Server
-   * - Websockets_Generic
-     - Markus Sattler
-     - 2.15.0
-     - Conexion Websockets y Server
-   * - ArduinoJson
-     - Benoit Blanchon
-     - 7.x.x
-     - Usa DynamicJsonDocument y StaticJsonDocument.
-
+	
