@@ -1,5 +1,5 @@
-PySide6
-=======
+Conexión del RENA-BOT
+=====================
 
 Estructura de la carpeta
 ------------------------

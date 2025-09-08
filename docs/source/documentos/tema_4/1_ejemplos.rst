@@ -1,17 +1,20 @@
-HMI - AT-01 kit
-===============
+Prácticas RENA-Bot
+==================
 
-Documentación y ejemplos de uso para blockly.
+En la siguiente sección se detallan los difernetes programas desarollados para el control y uso
+del RENA-BOT.
 
-**notas de uso**
 
-Versiones de libreria y procedimientos de uso.
 
-Librerias ejemplos
-------------------
+Enlace de descargar, AppImage
+`arduino <https://www.arduino.cc/en/software/>`__
 
-Las librerias a utilizar son:
 
-1. Python 3.8 o superior.
+.. _modo-libre:
 
-Uso actual Ubuntu 22 con python 3.10
+Modo Libre
+----------
+
+En el modolo libre usando un ``joystick`` se puede manipular el movimiento del robot, además, se
+puede visualizar los datos obtenidos por los sensores ``ultrasónico, LDR, LM35dz`` y manipular 
+el ``servomotor`` si el modelo armado es el manipulador.
