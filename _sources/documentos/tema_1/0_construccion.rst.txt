@@ -175,6 +175,14 @@ El modo clásico del RENA-BOT crea un modelo de robot móvil diferencial.
 
 Guía de armado:
 
+.. raw:: html
+
+   <video width="560" height="315" controls style="transform: rotate(90deg);">
+     <source src="_static/videos/rena.mp4" type="video/mp4">
+     Your browser does not support the video tag.
+   </video>
+
+
 
 Modo Manipulador
 ----------------
