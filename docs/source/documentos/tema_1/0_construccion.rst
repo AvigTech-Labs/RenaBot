@@ -29,25 +29,25 @@ Lista completa de componentes incluidos en el kit:
    * - 2
      - Soporte ultrasónico
      - 1
-     - .. image:: ./img/chasis.jpg
+     - .. image:: ./img/soporte_ultrasonico.jpg
           :width: 120px
           :align: center
    * - 3
      - Guardafangos
      - 2
-     - .. image:: ./img/chasis.jpg
+     - .. image:: ./img/guardafangos.jpg
           :width: 120px
           :align: center
    * - 4
      - Rueda loca
      - 2
-     - .. image:: ./img/chasis.jpg
+     - .. image:: ./img/rueda_loca.jpg
           :width: 120px
           :align: center
    * - 5
      - Motores DC
      - 2
-     - .. image:: ./img/chasis.jpg
+     - .. image:: ./img/motores.jpg
           :width: 120px
           :align: center
    * - 6
@@ -77,51 +77,88 @@ Lista completa de componentes incluidos en el kit:
    * - 10
      - Tornillos M3 X 10
      - 20
-     - .. image:: ./img/chasis.jpg
+     - .. image:: ./img/tornillo_m3_10.jpg
           :width: 120px
           :align: center
    * - 11
-     - Tuercas M3
-     - 20
-     - .. image:: ./img/chasis.jpg
+     - Tornillos M3 X 30
+     - 4
+     - .. image:: ./img/tornillo_m3_30.jpg
           :width: 120px
           :align: center
    * - 12
-     - Separadores plásticos
-     - 6
-     - .. image:: ./img/chasis.jpg
+     - Tuercas M3
+     - 25
+     - .. image:: ./img/tuercas.jpg
           :width: 120px
           :align: center
    * - 13
+     - Separadores plásticos M3 x 12
+     - 4
+     - .. image:: ./img/separador_12.jpg
+          :width: 120px
+          :align: center
+   * - 14
+     - Separadores plásticos M3 x 5
+     - 4
+     - .. image:: ./img/separador_12.jpg
+          :width: 120px
+          :align: center
+   * - 15
      - Protectore de circuito
      - 1
      - .. image:: ./img/chasis.jpg
           :width: 120px
           :align: center
-   * - 14 
+   * - 16 
      - Placa de control
      - 1
-     - .. image:: ./img/chasis.jpg
+     - .. image:: ./img/placa_control.jpg
           :width: 120px
           :align: center
-   * - 15
+   * - 17
      - Sensor QTR8
      - 1
-     - .. image:: ./img/chasis.jpg
+     - .. image:: ./img/seguidor_linea.jpg
           :width: 120px
           :align: center
-   * - 16
+   * - 18
      - Sensor Ultrasónico
      - 1
      - .. image:: ./img/chasis.jpg
           :width: 120px
           :align: center
-   * - 17 
+   * - 19
+     - Tapa Ultrasónico
+     - 1
+     - .. image:: ./img/chasis.jpg
+          :width: 120px
+          :align: center
+   * - 20 
      - Servomotor sg90
      - 1
      - .. image:: ./img/chasis.jpg
           :width: 120px
           :align: center
+   * - 21
+     - Hélice Servomotor
+     - 1
+     - .. image:: ./img/chasis.jpg
+          :width: 120px
+          :align: center
+   * - 22
+     - Buzzer
+     - 1
+     - .. image:: ./img/chasis.jpg
+          :width: 120px
+          :align: center
+   * - 23
+     - Batería
+     - 1
+     - .. image:: ./img/bateria.jpg
+          :width: 120px
+          :align: center
+
 
 Herramientas necesarias:
 
@@ -165,7 +202,7 @@ Prueba básica de movimiento
 - Verificación de motores.
 - Práctica de movimiento libre.  
 
-Revisa la sección :ref:`Instrucciones de instalación <modo-libre>`.
+Revisa la sección :ref:`Práctica de movimiento libre <modo-libre>`.
 
 
 .. tip::
