@@ -175,13 +175,9 @@ El modo clásico del RENA-BOT crea un modelo de robot móvil diferencial.
 
 Guía de armado:
 
-.. raw:: html
-
-   <video width="560" height="315" controls style="transform: rotate(90deg);">
-     <source src="_static/videos/rena.mp4" type="video/mp4">
-     Your browser does not support the video tag.
-   </video>
-
+.. image:: ./img/rena.gif
+   :width: 700px
+   :align: center
 
 
 Modo Manipulador
@@ -191,6 +187,9 @@ La versión manipulador del RENA-BOT utiliza los Guardafangos como piezas del gr
 
 Guía de armado:
 
+.. image:: ./img/rena.gif
+   :width: 700px
+   :align: center
 
 
 Revisión final
